@@ -1,4 +1,12 @@
-'''will contain all the code used to predict a new house's price.
+from typing import Union
+import pandas as pd
+from sklearn.linear_model import LinearRegression
 
-Your file should contain a function predict() that will take your preprocessed data as an input and return a price as output.
-'''
+
+def predict(model: LinearRegression, df: pd.DataFrame) -> Union[float, None]:
+  try:
+    result = model.predict(df)
+    result = result[0]
+  except:
+    return None
+  return result

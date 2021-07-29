@@ -9,34 +9,22 @@ This file should contain a function called preprocess() that will take a new hou
 If your data doesn't contain the required information, you should return an error to the user.
 '''
 
-# Missing: kitchen type, house equiped / unequiped
-
+from typing import Union
+import numpy as np
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
-df = pd.read_csv('../immo.csv')
+# bedroom_count,bathroom_count,postal_code,facades,living_surface,garden_surface,terrace,swimming_pool,fireplace,type,condition
 
-df.drop(['Unnamed: 0', 'url', 'id', 'transaction_type', 'subtype', 'attic', 'basement', 'fitness_room', 'tennis_court', 'sauna', 'jacuzzi', 'hammam', 'construction_year'], axis=1, inplace=True)
-print(df.columns)
+def preprocess(raw_data: dict, scaler: StandardScaler = None) -> Union[pd.DataFrame, None]:
+  '''
+  Return all the params or error if param is missing
+  '''
+  # Check for mandatory feature
+  # Transform dict to df, then fill empty columns with zeros, also fill dummies
 
-df['living_surface'] = df['living_surface'].fillna(0)
-df['garden_surface'] = df['garden_surface'].fillna(0)
-df['terrace_surface'] = df['terrace_surface'].fillna(0)
-df['swimming_pool'] = df['swimming_pool'].fillna(0)
-df['fireplace'] = df['fireplace'].fillna(0)
+  # Set features
+  features = np.zeros(19)
+  features[0] = np.float64(raw_data['bedroom_count'] or 0) # bedroom_count
 
-df['bedroom_count'] = df['bedroom_count'].fillna(0)
-df['bathroom_count'] = df['bathroom_count'].fillna(0)
-df['showerroom_count'] = df['showerroom_count'].fillna(0)
-
-
-df.replace(False, 0, inplace=True)
-df.replace(True, 1, inplace=True)
-
-print(df.shape)
-no_addr = df.drop(['region', 'province', 'district', 'locality', 'street_name', 'street_number'], axis=1)
-df.dropna(inplace=True)
-no_addr.dropna(inplace=True)
-
-print(no_addr.shape) # Around 10k rows without adresses (do not remove rows if adress is incomplete
-print(df.shape) # Around 6k rows with the adresses (drop incomplete adresses)
-print(df.head())
+  return features
