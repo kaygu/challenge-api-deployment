@@ -23,7 +23,7 @@ def predict_prices():
     except:
       return {"error": "Invalid data"}, 400
     df = preprocess(data)
-    if df:
+    if df is not None:
       prediction = predict(model, df)
       if prediction:
         return {"result": prediction}
@@ -37,4 +37,4 @@ def predict_prices():
 
 
 if __name__ == '__main__':
-  app.run(port=5000, debug=True)
+  app.run(port=8080, host='0.0.0.0')
