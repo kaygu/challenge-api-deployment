@@ -1,3 +1,4 @@
+import os
 import pickle
 from flask import Flask, request
 
@@ -5,13 +6,14 @@ from predict.prediction import predict
 from preprocessing.cleaning_data import preprocess
 
 app = Flask(__name__)
+port = int(os.environ.get("PORT", 8080))
 with open('model/model.pkl', 'rb') as io:
   model = pickle.load(io)
   # scaler = pickle.load(io)
 
 @app.route('/')
 def home():
-  return {'ping': 'alive'}
+  return {'status': 'alive'}
 
 @app.route('/predict', methods=['GET', 'POST'])
 def predict_prices():
@@ -26,7 +28,7 @@ def predict_prices():
     if df is not None:
       prediction = predict(model, df)
       if prediction:
-        return {"result": prediction}
+        return {"prediction": prediction}
       else:
         return {"error": "An unexpected error happend when predicting the price"}, 400
     else:
@@ -37,4 +39,4 @@ def predict_prices():
 
 
 if __name__ == '__main__':
-  app.run(port=8080, host='0.0.0.0')
+  app.run(port=port, host='0.0.0.0')
