@@ -38,7 +38,7 @@ docker run -it -p 8080:8080 predict_api:latest
 
 ## API
 
-You can access the application at https://kaygu.herokuapp.com/.
+You can access the application at https://predict-immo.herokuapp.com/
 
 ### /
 
