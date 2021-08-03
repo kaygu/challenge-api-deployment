@@ -1,11 +1,13 @@
 import os
 import pickle
 from flask import Flask, request
+from flask_cors import CORS
 
 from predict.prediction import predict
 from preprocessing.cleaning_data import preprocess
 
 app = Flask(__name__)
+cors = CORS(app)
 port = int(os.environ.get("PORT", 8080))
 with open('model/model.pkl', 'rb') as io:
   model = pickle.load(io)

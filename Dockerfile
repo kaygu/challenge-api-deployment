@@ -16,4 +16,6 @@ WORKDIR /app
 RUN python3 ./preprocessing/clean_dataset.py
 RUN python3 ./model/model.py
 
+EXPOSE 8080
+
 CMD ["python3", "app.py"]
